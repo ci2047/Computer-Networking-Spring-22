@@ -15,17 +15,17 @@ def webServer(port=13331):
 
   while True:
     #Establish the connection
-    #print('Ready to serve...')
+    print('Ready to serve...')
     #Fill in start 
     connectionSocket, addr = serverSocket.accept()     
-    connectionSocket.send("200 OK".encode())
+    
     #need to accept whatever is inbound -see powerpoint 
 
        #Fill in end
     try:
 
       try:
-        message = "http://127.0.0.1:13331/helloworld.html"
+        message = "http://localhost:13331/helloworld.html"
 
         #I have this file or I don't have this file
         
@@ -34,11 +34,13 @@ def webServer(port=13331):
         f = open(filename[1:])
         #Fill in start #read content of that file and send it  
         outputdata = f.read()
+        print(outputdata)
+        connectionSocket.send(outputdata.encode())
         #Fill in end
         
         #Send one HTTP header line into socket.
         #Fill in start
-          connectionSocket.send(outputdata.encode())   
+        connectionSocket.send("HTTP /1.1 200 OK".encode())
 
         #Fill in end
 
@@ -51,14 +53,14 @@ def webServer(port=13331):
       except IOError:
         # Send response message for file not found (404)
         #Fill in start
-       connectionSocket.send("404 Not Found".encode())
+       connectionSocket.send("HTTP /1.1 404 Not Found".encode())
 
         #Fill in end
 
 
         #Close client socket
         #Fill in start
-        connectionSocket.close()
+      connectionSocket.close()
 
         #Fill in end
 
