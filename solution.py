@@ -15,17 +15,17 @@ def webServer(port=13331):
 
   while True:
     #Establish the connection
-    #print('Ready to serve...')
+    print('Ready to serve...')
     #Fill in start 
     connectionSocket, addr = serverSocket.accept()     
-    
     #need to accept whatever is inbound -see powerpoint 
 
        #Fill in end
     try:
 
       try:
-        message = "http://localhost:13331/helloworld.html"
+        
+        message = connectionSocket.recv(1024).decode()
 
         #I have this file or I don't have this file
         
@@ -33,8 +33,8 @@ def webServer(port=13331):
         filename = message.split()[1]
         f = open(filename[1:])
         #Fill in start #read content of that file and send it  
-        outputdata = f.read()
-        print(outputdata)
+        outputdata = f.getline()
+        #print(outputdata)
         connectionSocket.send(outputdata.encode())
         #Fill in end
         
@@ -60,7 +60,7 @@ def webServer(port=13331):
 
         #Close client socket
         #Fill in start
-      connectionSocket.close()
+      connectionSocket.close() #close connection not the socket
 
         #Fill in end
 
