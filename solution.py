@@ -11,16 +11,13 @@ def webServer(port=13331):
   #Fill in start
   #Everything that needs to be said here to make it listen
   serverSocket.listen(1)
-
   #Fill in end
 
   while True:
     #Establish the connection
     #print('Ready to serve...')
-    connectionSocket, addr = serverSocket.accept()
-    sentence = connectionSocket.recv(1024).decode()
-     #Fill in start 
-
+    #Fill in start 
+    connectionSocket, addr = serverSocket.accept()     
     
     #need to accept whatever is inbound -see powerpoint 
 
@@ -28,8 +25,7 @@ def webServer(port=13331):
     try:
 
       try:
-        message = "200 OK" #Fill in start  
-        connectionSocket.send(message.encode())
+        message = connectionSocket.recv(1024).decode()
 
         #I have this file or I don't have this file
 
