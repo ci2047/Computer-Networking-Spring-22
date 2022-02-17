@@ -18,17 +18,17 @@ def webServer(port=13331):
     #print('Ready to serve...')
     #Fill in start 
     connectionSocket, addr = serverSocket.accept()     
-    
+    connectionSocket.send("200 OK".encode())
     #need to accept whatever is inbound -see powerpoint 
 
        #Fill in end
     try:
 
       try:
-        message = connectionSocket.recv(1024).decode()
+        message = :13331/helloworld.html
 
         #I have this file or I don't have this file
-
+        
           #Fill in end
         filename = message.split()[1]
         f = open(filename[1:])
@@ -51,8 +51,7 @@ def webServer(port=13331):
       except IOError:
         # Send response message for file not found (404)
         #Fill in start
-       message = "404 Not Found"
-       connectionSocket.send(message.encode())
+       connectionSocket.send("404 Not Found".encode())
 
         #Fill in end
 
