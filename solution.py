@@ -10,14 +10,16 @@ def webServer(port=13331):
   serverSocket.bind(("", port))
   #Fill in start
   #Everything that needs to be said here to make it listen
-  serverSocket.listen(port)
+  serverSocket.listen(1)
 
   #Fill in end
 
   while True:
     #Establish the connection
     #print('Ready to serve...')
-    connectionSocket, addr = serverSocket.accept() #Fill in start 
+    connectionSocket, addr = serverSocket.accept()
+    sentence = connectionSocket.recv(1024).decode()
+     #Fill in start 
 
     
     #need to accept whatever is inbound -see powerpoint 
@@ -26,9 +28,9 @@ def webServer(port=13331):
     try:
 
       try:
-        message = #Fill in start  
+        message = "200 OK" #Fill in start  
+        connectionSocket.send(message.encode())
 
-        print("200 OK")
         #I have this file or I don't have this file
 
           #Fill in end
@@ -53,7 +55,9 @@ def webServer(port=13331):
       except IOError:
         # Send response message for file not found (404)
         #Fill in start
-        print("404 Not Found")
+       message = "404 Not Found"
+       connectionSocket.send(message.encode())
+
         #Fill in end
 
 
