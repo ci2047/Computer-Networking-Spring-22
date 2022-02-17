@@ -25,7 +25,7 @@ def webServer(port=13331):
     try:
 
       try:
-        message = ":13331/helloworld.html"
+        message = "http://127.0.0.1:13331/helloworld.html"
 
         #I have this file or I don't have this file
         
