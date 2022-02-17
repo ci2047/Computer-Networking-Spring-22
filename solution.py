@@ -25,7 +25,7 @@ def webServer(port=13331):
     try:
 
       try:
-        message = :13331/helloworld.html
+        message = ":13331/helloworld.html"
 
         #I have this file or I don't have this file
         
@@ -33,7 +33,7 @@ def webServer(port=13331):
         filename = message.split()[1]
         f = open(filename[1:])
         #Fill in start #read content of that file and send it  
-        outputdata = f.readline()
+        outputdata = f.read()
         #Fill in end
         
         #Send one HTTP header line into socket.
