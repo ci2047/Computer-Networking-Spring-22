@@ -48,10 +48,12 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         recPacket, addr = mySocket.recvfrom(1024)
 
         # Fill in start
-
-        ICMP_header = recPacket
-
+        #you need to receive the structure ICMP_ECHO_REPLY and fetch the information you need, such as checksum, sequence number, time to live (TTL), etc. 
         # Fetch the ICMP header from the IP packet
+
+        ICMP_header = recPacket[20:28]
+        type, code, checksum, ID, sequence = struct.unpack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+
 
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
@@ -112,14 +114,21 @@ def ping(host, timeout=1):
     
     #Send ping requests to a server separated by approximately one second
     #Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
+    delays = []
 
-    
     for i in range(0,4): #Four pings will be sent (loop runs for i=0, 1, 2, 3)
         delay = doOnePing(dest, timeout)
         print(delay)
+        delays.append(delay)
         time.sleep(1)  # one second
         
+
+    packet_min = min(delays)
+    packet_avg = avg(delays)
+    packet_max = max(delays)
+    stdev_var = 0
     #You should have the values of delay for each ping here; fill in calculation for packet_min, packet_avg, packet_max, and stdev
+    #send a ping, receive a ping, run some mathematical functions (when you receive it and when you send it it sends a time)
     vars = [str(round(packet_min, 8)), str(round(packet_avg, 8)), str(round(packet_max, 8)),str(round(stdev(stdev_var), 8))]
 
     return vars
