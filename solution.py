@@ -123,7 +123,8 @@ def ping(host, timeout=1):
     for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
         delay = doOnePing(dest, timeout)
         print(delay)
-        delays.append(delay)
+        if delay != "Request timed out.":
+            delays.append(delay)
         time.sleep(1)  # one second
 
     packet_min = min(delays)
