@@ -126,7 +126,6 @@ def ping(host, timeout=1):
         if delay != "Request timed out.": #need to figure out how to handle these messages in delay calculations
             delays.append(delay)
         time.sleep(1)  # one second
-    #print(delays)
 
     if len(delays) == 0:
         vars = ['0', '0.0', '0', '0.0']
@@ -143,5 +142,5 @@ def ping(host, timeout=1):
 
 
 if __name__ == '__main__':
-    #ping("google.co.il")
-    ping("172.217.165.131")
+    ping("google.co.il")
+    #ping("172.217.165.131")
