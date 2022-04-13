@@ -53,7 +53,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         ICMP_type, ICMP_code, ICMP_checksum, ICMP_ID, ICMP_sequence = struct.unpack("bbHHh", ICMP_header)
 
         #verify packet and use data from packet to calculate the delay
-        if ICMP_ID == ID:
+        if ICMP_ID == ID and ICMP_code == 0:
             #Calculate time from sending and receiving
             timeSent = startedSelect
             roundTripTime = timeReceived - timeSent
