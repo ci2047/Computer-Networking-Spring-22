@@ -4,8 +4,8 @@ import sys
 import struct
 import time
 import select
-import binascii
 import statistics
+import binascii
 
 # Should use stdev
 
@@ -49,11 +49,19 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         recPacket, addr = mySocket.recvfrom(1024)
 
         # Fill in start
-        # you need to receive the structure ICMP_ECHO_REPLY and fetch the information you need, such as checksum, sequence number, time to live (TTL), etc.
-        # Fetch the ICMP header from the IP packet
-
         ICMP_header = recPacket[20:28]
-        type, code, checksum, ID, sequence = struct.unpack("bbHHh", ICMP_header)
+        ICMP_type, ICMP_code, ICMP_checksum, ICMP_ID, ICMP_sequence = struct.unpack("bbHHh", ICMP_header)
+
+        #verify packet and use data from packet to calculate the delay
+        if ICMP_ID == ID & ICMP_type == 8:
+            #Calculate time from sending and receiving
+            timeSent = startedSelect
+            roundTripTime = timeReceived - timeSent
+            return roundTripTime
+
+
+
+        # Fetch the ICMP header from the IP packet
 
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
@@ -73,7 +81,6 @@ def sendOnePing(mySocket, destAddr, ID):
     myChecksum = checksum(header + data)
 
     # Get the right checksum, and put in the header
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
 
     if sys.platform == 'darwin':
         # Convert 16-bit integers from host to network  byte order
@@ -104,7 +111,7 @@ def doOnePing(destAddr, timeout):
 
 
 def ping(host, timeout=1):
-    # timeout=1 means: If one second goes by without a reply from the server,   
+    # timeout=1 means: If one second goes by without a reply from the server,
     # the client assumes that either the client's ping or the server's pong is lost
     dest = gethostbyname(host)
     print("Pinging " + dest + " using Python:")
@@ -113,24 +120,18 @@ def ping(host, timeout=1):
     # Send ping requests to a server separated by approximately one second
     # Add something here to collect the delays of each ping in a list so you can calculate vars after your ping
     delays = []
-
     for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
         delay = doOnePing(dest, timeout)
         print(delay)
-        if delay = 'Request timed out.':
-            delay = 0
-        delays.append(int(delay))
+        delays.append(delay)
         time.sleep(1)  # one second
 
     packet_min = min(delays)
     packet_avg = statistics.mean(delays)
     packet_max = max(delays)
     stdev_var = statistics.stdev(delays)
-
     # You should have the values of delay for each ping here; fill in calculation for packet_min, packet_avg, packet_max, and stdev
-    # send a ping, receive a ping, run some mathematical functions (when you receive it and when you send it it sends a time)
-    vars = [str(round(packet_min, 8)), str(round(packet_avg, 8)), str(round(packet_max, 8)),
-            str(round(stdev(stdev_var), 8))]
+    vars = [str(round(packet_min, 8)), str(round(packet_avg, 8)), str(round(packet_max, 8)),str(round(statistics.stdev(stdev_var), 8))]
 
     return vars
 
