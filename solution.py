@@ -57,6 +57,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
             #Calculate time from sending and receiving
             timeSent = startedSelect
             roundTripTime = timeReceived - timeSent
+            roundTripTime = roundTripTime * 1000 #convert to milliseconds
             return roundTripTime
 
 
@@ -132,12 +133,24 @@ def ping(host, timeout=1):
         return vars
 
     packet_min = min(delays)
+    packet_min = round(packet_min,8)
+    packet_min = str(packet_min)
+    #print(f"packet min is: {packet_min}")
     packet_avg = statistics.mean(delays)
+    packet_avg = round(packet_avg,8)
+    packet_avg = str(packet_avg)
+    #print(f"packet avg is: {packet_avg}")
     packet_max = max(delays)
+    packet_max = round(packet_max,8)
+    packet_max = str(packet_max)
+   # print(f"packet max is: {packet_max}")
     stdev_var = statistics.stdev(delays)
+    stdev_var = round(stdev_var, 8)
+    stdev_var = str(stdev_var)
+   # print(f"stdev is: {stdev_var}")
     # You should have the values of delay for each ping here; fill in calculation for packet_min, packet_avg, packet_max, and stdev
-    vars = [str(round(packet_min, 8)), str(round(packet_avg, 8)), str(round(packet_max, 8)),str(round(statistics.stdev(stdev_var), 8))]
-
+    #vars = [(str(round(packet_min, 8))), (str(round(packet_avg, 8))), (str(round(packet_max, 8)), (str(round(stdev_var), 8))]
+    vars = [(packet_min), (packet_avg),(packet_max), (stdev_var)]
     return vars
 
 
