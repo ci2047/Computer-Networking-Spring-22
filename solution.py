@@ -123,7 +123,7 @@ def ping(host, timeout=1):
     for i in range(0, 4):  # Four pings will be sent (loop runs for i=0, 1, 2, 3)
         delay = doOnePing(dest, timeout)
         print(delay)
-        if delay != "Request timed out.":
+        if delay != "Request timed out.": #need to figure out how to handle these messages in delay calculations
             delays.append(delay)
         time.sleep(1)  # one second
 
@@ -139,3 +139,4 @@ def ping(host, timeout=1):
 
 if __name__ == '__main__':
     ping("google.co.il")
+    ping()
