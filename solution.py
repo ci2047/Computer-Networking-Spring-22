@@ -81,7 +81,7 @@ def get_route(hostname):
 
             # Fill in start
             tracelist1 = []
-
+            hops = 0;
             # Make a raw socket named mySocket
             mySocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
             # Fill in end
@@ -99,6 +99,7 @@ def get_route(hostname):
                     tracelist1.append("* * * Request timed out.")
                     # Fill in start
                     # You should add the list above to your all traces list
+                    hops = hops + 1
                     tracelist2.append(tracelist1)
                     # Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
@@ -122,7 +123,7 @@ def get_route(hostname):
                 # Fill in end
                 try:  # try to fetch the hostname
                     # Fill in start
-                    recvaddr = gethostbyaddr(addr[0])[0] #Captures first returned value - host name
+                    Hostname = gethostbyaddr(addr[0])[0] #Captures first returned value - host name
                     # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
@@ -133,16 +134,28 @@ def get_route(hostname):
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 +
                                                                 bytes])[0]
+
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(timeSent)
+
+                    tracelist1.append(ttl) #replicate for each step
+                    tracelist1.append(recvaddr)
+                    tracelist1.append(addr[0])
+                    tracelist1.append(Hostname)
+                    print(tracelist1)
+                    tracelist2.append(tracelist1)
                     # Fill in end
                 elif type == 3: #destination unreachable
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here
-                    tracelist1.append(timeSent)
+                    tracelist1.append(ttl)  # replicate for each step
+                    tracelist1.append(recvaddr)
+                    tracelist1.append(addr[0])
+                    tracelist1.append(Hostname)
+                    print(tracelist1)
+                    tracelist2.append(tracelist1)
 
                     # Fill in end
                 elif type == 0: #ECHO reply
@@ -150,13 +163,19 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should add your responses to your lists here and return your list if your destination IP is met
-                    tracelist1.append(timeSent)
+                    tracelist1.append(ttl)  # replicate for each step
+                    tracelist1.append(recvaddr)
+                    tracelist1.append(addr[0])
+                    tracelist1.append(Hostname)
+                    print(tracelist1)
+                    tracelist2.append(tracelist1)
                     return tracelist2
                     # Fill in end
                 else:
                     #Fill in start
                     #If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append('hostname not returnable')
+                    tracelist2.append(tracelist1)
                     #Fill in end
                 break
             finally:
