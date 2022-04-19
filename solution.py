@@ -81,7 +81,6 @@ def get_route(hostname):
 
             # Fill in start
             tracelist1 = []
-            hops = 0;
             # Make a raw socket named mySocket
             mySocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
             # Fill in end
@@ -99,7 +98,6 @@ def get_route(hostname):
                     tracelist1.append("* * * Request timed out.")
                     # Fill in start
                     # You should add the list above to your all traces list
-                    hops = hops + 1
                     tracelist2.append(tracelist1)
                     # Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
@@ -127,7 +125,7 @@ def get_route(hostname):
                     # Fill in end
                 except herror:  # if the host does not provide a hostname
                 # Fill in start
-                    recvaddr = 'hostname not returnable'
+                    Hostname = 'hostname not returnable'
                 # Fill in end
 
                 if type == 11: #TTL expired
